@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>貼文刪除範例</title>
+<style>
+  body { font-family: "微軟正黑體", sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+  .post { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; position: relative; }
+  .author { font-size: 0.9em; color: #555; }
+  button { position: absolute; right: 10px; top: 10px; }
+</style>
+</head>
+<body>
+
+<h1>我的貼文列表</h1>
+<div id="postsContainer"></div>
+
+<script>
+  // 模擬目前登入使用者
+  const currentUser = "chenyanting";
+
+  // 模擬貼文資料（id, author, content）
+  let posts = [
+    { id: 1, author: "chenyanting", content: "這是我的第一篇貼文" },
+    { id: 2, author: "alice", content: "Alice 的貼文" },
+    { id: 3, author: "chenyanting", content: "這是我的第二篇貼文" }
+  ];
+
+  function renderPosts() {
+    const container = document.getElementById("postsContainer");
+    container.innerHTML = ""; // 清空
+
+    posts.forEach(post => {
+      const postDiv = document.createElement("div");
+      postDiv.className = "post";
+
+      postDiv.innerHTML = `
+        <div>${post.content}</div>
+        <div class="author">作者：${post.author}</div>
+      `;
+
+      if (post.author === currentUser) {
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "刪除";
+        delBtn.onclick = () => {
+          if (confirm("確定要刪除這則貼文嗎？")) {
+            deletePost(post.id);
+          }
+        };
+        postDiv.appendChild(delBtn);
+      }
+
+      container.appendChild(postDiv);
+    });
+  }
+
+  function deletePost(postId) {
+    posts = posts.filter(p => p.id !== postId);
+    renderPosts();
+  }
+
+  renderPosts();
+</script>
+
+</body>
+</html>
